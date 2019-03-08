@@ -25,9 +25,10 @@ namespace Asynchroniczne_okienko
         {
             InitializeComponent();
             InitWatcher();
-            _monitor.EnableRaisingEvents = true;
+            
             Thread watekpoboczny = new Thread(SprawdzCzas);
             watekpoboczny.Start();
+            
             
             
         }
@@ -65,16 +66,29 @@ namespace Asynchroniczne_okienko
             string tekst = await ToDo();  //await powoduje zwrócenie od razu rezultatu zadania które jest wynikiem funkcji
             textBoxKomentarz.AppendText(tekst + "\r\n");
         }
-
+        string _zmiennaTekstowa = @"C:\Roboczy";
+        
         private void button1_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog _wybierzFolder = new FolderBrowserDialog();
-            if (_wybierzFolder.ShowDialog() == System.Windows.Forms.DialogResult.OK) MessageBox.Show(_wybierzFolder.SelectedPath);
+            if (_monitor.EnableRaisingEvents == false)
+            {
+                FolderBrowserDialog _wybierzFolder = new FolderBrowserDialog();
+                if (_wybierzFolder.ShowDialog() == System.Windows.Forms.DialogResult.OK) MessageBox.Show("Wybrano: " + _wybierzFolder.SelectedPath);
+                _zmiennaTekstowa = _wybierzFolder.SelectedPath;
+                textBox_MonitorowanaSciezka.AppendText(_zmiennaTekstowa);
+            }
+            else
+            {
+                MessageBox.Show("Trwa monitorowanie innego katalogu, najpierw zatrzymaj ten proces");
+            }
+            
         }
         
         private void InitWatcher()
         {
-            _monitor = new FileSystemWatcher(@"C:\Roboczy");
+            
+            _monitor = new FileSystemWatcher(@_zmiennaTekstowa);
+                
 
             _monitor.Changed += _watcher_Changed;
             _monitor.Created += _watcher_Changed;
@@ -150,8 +164,17 @@ namespace Asynchroniczne_okienko
 
         }
 
-        
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            InitWatcher();
+            _monitor.EnableRaisingEvents = true;
+            textBox_MonitorowanaSciezka.BackColor = Color.LightGreen;
+        }
 
-        
+        private void buttonZatrzymajMonitorowanie_Click(object sender, EventArgs e)
+        {
+            _monitor.EnableRaisingEvents = false;
+            textBox_MonitorowanaSciezka.BackColor = Color.LightGoldenrodYellow;
+        }
     }
 }
