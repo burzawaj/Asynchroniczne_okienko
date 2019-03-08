@@ -46,7 +46,7 @@
             this.button_dwa.Name = "button_dwa";
             this.button_dwa.Size = new System.Drawing.Size(171, 54);
             this.button_dwa.TabIndex = 0;
-            this.button_dwa.Text = "button1";
+            this.button_dwa.Text = "Przycisk odstresowujący";
             this.button_dwa.UseVisualStyleBackColor = true;
             this.button_dwa.Click += new System.EventHandler(this.button_dwa_Click);
             // 

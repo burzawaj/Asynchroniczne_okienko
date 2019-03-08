@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +26,10 @@ namespace Asynchroniczne_okienko
         public Form1()
         {
             InitializeComponent();
+            buttonZatrzymajMonitorowanie.Enabled = false;
+            button1.Enabled = false;
             InitWatcher();
+
             
             Thread watekpoboczny = new Thread(SprawdzCzas);
             watekpoboczny.Start();
@@ -76,10 +81,11 @@ namespace Asynchroniczne_okienko
                 if (_wybierzFolder.ShowDialog() == System.Windows.Forms.DialogResult.OK) MessageBox.Show("Wybrano: " + _wybierzFolder.SelectedPath);
                 _zmiennaTekstowa = _wybierzFolder.SelectedPath;
                 textBox_MonitorowanaSciezka.AppendText(_zmiennaTekstowa);
+                button1.Enabled = true;
             }
             else
             {
-                MessageBox.Show("Trwa monitorowanie innego katalogu, najpierw zatrzymaj ten proces");
+                MessageBox.Show("Trwa monitorowanie, przed zmianą zatrzymaj ten proces");
             }
             
         }
@@ -141,7 +147,7 @@ namespace Asynchroniczne_okienko
                 BeginInvoke((Action)(() =>
                 {
                     listBox_LogiZmian.Items.Insert(0, log);
-                    //wyslijEmail(log);
+                    wyslijEmail(log);
 
                 }
                     ));//lamda do przeniesienia sie do głównego wątku
@@ -156,8 +162,8 @@ namespace Asynchroniczne_okienko
 
             Task<string> zadanie = Task.Run(() =>
             {
-                Thread.Sleep(3000);
-                return "Nacisnąłeś przycisk 3s temu";
+                Thread.Sleep(2000);
+                return "Don't worry be happy :) ";
             });
             return zadanie;
                        
@@ -169,12 +175,34 @@ namespace Asynchroniczne_okienko
             InitWatcher();
             _monitor.EnableRaisingEvents = true;
             textBox_MonitorowanaSciezka.BackColor = Color.LightGreen;
+            buttonZatrzymajMonitorowanie.Enabled = true;
+            button1.Enabled = false;
         }
 
         private void buttonZatrzymajMonitorowanie_Click(object sender, EventArgs e)
         {
             _monitor.EnableRaisingEvents = false;
             textBox_MonitorowanaSciezka.BackColor = Color.LightGoldenrodYellow;
+            button1.Enabled = true;
+            buttonZatrzymajMonitorowanie.Enabled = false;
+        }
+        public void wyslijEmail(string tresc)
+        {
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.Credentials = new NetworkCredential()
+            {
+                UserName = Credentials.LOGIN,
+                Password = Credentials.PASSWORD
+            };
+            smtpClient.EnableSsl = true;
+            MailMessage messege = new MailMessage();
+            messege.From = new MailAddress("balluffkurs@gmail.com", "Wiadomość od JB");
+            messege.To.Add(new MailAddress("jaroslaw.burzawa@balluff.pl", "Jarek"));
+            messege.Subject = "Wiadomość testowa";
+            messege.Body = tresc;
+            smtpClient.Send(messege);
+
+
         }
     }
 }
