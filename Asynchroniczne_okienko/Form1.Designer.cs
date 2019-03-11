@@ -38,11 +38,16 @@
             this.textBox_MonitorowanaSciezka = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonZatrzymajMonitorowanie = new System.Windows.Forms.Button();
+            this.pictureBox_Wskaznik = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pictureBoxWskaznikOK = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Wskaznik)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWskaznikOK)).BeginInit();
             this.SuspendLayout();
             // 
             // button_dwa
             // 
-            this.button_dwa.Location = new System.Drawing.Point(535, 82);
+            this.button_dwa.Location = new System.Drawing.Point(690, 88);
             this.button_dwa.Name = "button_dwa";
             this.button_dwa.Size = new System.Drawing.Size(171, 54);
             this.button_dwa.TabIndex = 0;
@@ -52,7 +57,7 @@
             // 
             // textBoxKomentarz
             // 
-            this.textBoxKomentarz.Location = new System.Drawing.Point(535, 166);
+            this.textBoxKomentarz.Location = new System.Drawing.Point(690, 172);
             this.textBoxKomentarz.Multiline = true;
             this.textBoxKomentarz.Name = "textBoxKomentarz";
             this.textBoxKomentarz.Size = new System.Drawing.Size(253, 243);
@@ -60,7 +65,7 @@
             // 
             // textBox_ZEGAR
             // 
-            this.textBox_ZEGAR.Location = new System.Drawing.Point(535, 45);
+            this.textBox_ZEGAR.Location = new System.Drawing.Point(690, 51);
             this.textBox_ZEGAR.Name = "textBox_ZEGAR";
             this.textBox_ZEGAR.Size = new System.Drawing.Size(187, 22);
             this.textBox_ZEGAR.TabIndex = 2;
@@ -68,7 +73,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(532, 9);
+            this.label1.Location = new System.Drawing.Point(687, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 17);
             this.label1.TabIndex = 3;
@@ -129,11 +134,43 @@
             this.buttonZatrzymajMonitorowanie.UseVisualStyleBackColor = true;
             this.buttonZatrzymajMonitorowanie.Click += new System.EventHandler(this.buttonZatrzymajMonitorowanie_Click);
             // 
+            // pictureBox_Wskaznik
+            // 
+            this.pictureBox_Wskaznik.Image = global::Asynchroniczne_okienko.Properties.Resources.zolte_swiatlo;
+            this.pictureBox_Wskaznik.Location = new System.Drawing.Point(541, 172);
+            this.pictureBox_Wskaznik.Name = "pictureBox_Wskaznik";
+            this.pictureBox_Wskaznik.Size = new System.Drawing.Size(69, 166);
+            this.pictureBox_Wskaznik.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox_Wskaznik.TabIndex = 10;
+            this.pictureBox_Wskaznik.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(487, 137);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(188, 17);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Status wysyłania wiadomości";
+            // 
+            // pictureBoxWskaznikOK
+            // 
+            this.pictureBoxWskaznikOK.Image = global::Asynchroniczne_okienko.Properties.Resources.zielone_swiatlo;
+            this.pictureBoxWskaznikOK.Location = new System.Drawing.Point(541, 181);
+            this.pictureBoxWskaznikOK.Name = "pictureBoxWskaznikOK";
+            this.pictureBoxWskaznikOK.Size = new System.Drawing.Size(69, 166);
+            this.pictureBoxWskaznikOK.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBoxWskaznikOK.TabIndex = 12;
+            this.pictureBoxWskaznikOK.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(964, 549);
+            this.Controls.Add(this.pictureBoxWskaznikOK);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.pictureBox_Wskaznik);
             this.Controls.Add(this.buttonZatrzymajMonitorowanie);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox_MonitorowanaSciezka);
@@ -146,6 +183,8 @@
             this.Controls.Add(this.button_dwa);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Wskaznik)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWskaznikOK)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,6 +202,9 @@
         private System.Windows.Forms.TextBox textBox_MonitorowanaSciezka;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonZatrzymajMonitorowanie;
+        private System.Windows.Forms.PictureBox pictureBox_Wskaznik;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pictureBoxWskaznikOK;
     }
 }
 

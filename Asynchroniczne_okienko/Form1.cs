@@ -17,7 +17,7 @@ namespace Asynchroniczne_okienko
 
 {
     delegate void StringArgReturningVoidDelegate(string text);
-    
+
 
     public partial class Form1 : Form
     {
@@ -29,13 +29,15 @@ namespace Asynchroniczne_okienko
             buttonZatrzymajMonitorowanie.Enabled = false;
             button1.Enabled = false;
             InitWatcher();
+            pictureBox_Wskaznik.Visible = false;
+            pictureBoxWskaznikOK.Visible = false;
 
-            
+
             Thread watekpoboczny = new Thread(SprawdzCzas);
             watekpoboczny.Start();
-            
-            
-            
+
+
+
         }
 
         private void SprawdzCzas()
@@ -44,13 +46,13 @@ namespace Asynchroniczne_okienko
             mojTimer.Elapsed += OnTimedEvent;
             mojTimer.AutoReset = true;
             mojTimer.Enabled = true;
-            
+
         }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            
-            SetText(e.SignalTime.ToString()); 
+
+            SetText(e.SignalTime.ToString());
         }
 
         private void SetText(string text)
@@ -65,14 +67,14 @@ namespace Asynchroniczne_okienko
                 this.textBox_ZEGAR.Text = text;
             }
         }
-                          
+
         private async void button_dwa_Click(object sender, EventArgs e)
         {
             string tekst = await ToDo();  //await powoduje zwrócenie od razu rezultatu zadania które jest wynikiem funkcji
             textBoxKomentarz.AppendText(tekst + "\r\n");
         }
         string _zmiennaTekstowa = @"C:\Roboczy";
-        
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (_monitor.EnableRaisingEvents == false)
@@ -87,14 +89,14 @@ namespace Asynchroniczne_okienko
             {
                 MessageBox.Show("Trwa monitorowanie, przed zmianą zatrzymaj ten proces");
             }
-            
+
         }
-        
+
         private void InitWatcher()
         {
-            
+
             _monitor = new FileSystemWatcher(@_zmiennaTekstowa);
-                
+
 
             _monitor.Changed += _watcher_Changed;
             _monitor.Created += _watcher_Changed;
@@ -139,7 +141,7 @@ namespace Asynchroniczne_okienko
 
 
 
-
+        static bool mailSent = false;
         private void AddLog(string log)
         {
             if (InvokeRequired) //sprawdzenie czy do wykonania potrzeba być w wątku głównym
@@ -147,14 +149,18 @@ namespace Asynchroniczne_okienko
                 BeginInvoke((Action)(() =>
                 {
                     listBox_LogiZmian.Items.Insert(0, log);
-                    wyslijEmail(log);
+                    pictureBoxWskaznikOK.Visible = false;
+                    pictureBox_Wskaznik.Visible = true;
+                    Task wysylanieEmaila = new Task(() => wyslijEmail(log)) ;
+                    wysylanieEmaila.Start();
+                    
 
                 }
                     ));//lamda do przeniesienia sie do głównego wątku
             }
         }
 
-    
+
 
 
         private Task<string> ToDo()
@@ -166,7 +172,7 @@ namespace Asynchroniczne_okienko
                 return "Don't worry be happy :) ";
             });
             return zadanie;
-                       
+
 
         }
 
@@ -188,6 +194,8 @@ namespace Asynchroniczne_okienko
         }
         public void wyslijEmail(string tresc)
         {
+            
+            
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.Credentials = new NetworkCredential()
             {
@@ -201,8 +209,11 @@ namespace Asynchroniczne_okienko
             messege.Subject = "Wiadomość testowa";
             messege.Body = tresc;
             smtpClient.Send(messege);
-
+            
 
         }
+        
+        
+        
     }
 }
