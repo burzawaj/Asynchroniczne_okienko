@@ -144,16 +144,30 @@ namespace Asynchroniczne_okienko
         static bool mailSent = false;
         private void AddLog(string log)
         {
+            
             if (InvokeRequired) //sprawdzenie czy do wykonania potrzeba być w wątku głównym
             {
-                BeginInvoke((Action)(() =>
+                BeginInvoke((Action)(async () =>
                 {
                     listBox_LogiZmian.Items.Insert(0, log);
                     pictureBoxWskaznikOK.Visible = false;
                     pictureBox_Wskaznik.Visible = true;
-                    Task wysylanieEmaila = new Task(() => wyslijEmail(log)) ;
-                    wysylanieEmaila.Start();
+                    Task<bool> wysylanieEmaila = wyslijEmail(log) ;
                     
+                    mailSent = await wysylanieEmaila;
+                    if (mailSent == true)
+                    {
+                        pictureBoxWskaznikOK.Visible = true;
+                        pictureBox_Wskaznik.Visible = false;
+
+                    }
+                    else
+                    {
+                        pictureBoxWskaznikOK.Visible = false;
+                        pictureBox_Wskaznik.Visible = true;
+
+                    }
+
 
                 }
                     ));//lamda do przeniesienia sie do głównego wątku
@@ -192,9 +206,8 @@ namespace Asynchroniczne_okienko
             button1.Enabled = true;
             buttonZatrzymajMonitorowanie.Enabled = false;
         }
-        public void wyslijEmail(string tresc)
+        async Task<bool> wyslijEmail(string tresc)
         {
-            
             
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.Credentials = new NetworkCredential()
@@ -209,7 +222,8 @@ namespace Asynchroniczne_okienko
             messege.Subject = "Wiadomość testowa";
             messege.Body = tresc;
             smtpClient.Send(messege);
-            
+            Thread.Sleep(2000);
+            return true;
 
         }
         
